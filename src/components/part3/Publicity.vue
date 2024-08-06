@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="r-content">
-      <el-image src="https://cdn.nzxf.net/bucket/v2-fda5ab4414155c0c171ac5f87bc82ded_r.jpg" loading="eager" fit="cover"></el-image>
+      <el-image :src="src.image.part3" loading="eager" fit="cover"></el-image>
     </div>
   </div>
 </template>
@@ -19,10 +19,11 @@
 <script setup>
 import axios from "@/utils/axios-plugin.js";
 import {nextTick} from "vue";
+import {url,src} from "@/config.js";
 
 const emit = defineEmits(["upload","data"])
 const handleGenerate = () => {
-  axios.post("/imagesTextMatchs")
+  axios.post(url.imagesTextMatchs)
       .then((res)=>{
         nextTick(()=>{
           emit("data",res)

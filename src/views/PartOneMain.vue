@@ -3,7 +3,7 @@
     <Publicity @start="handleStart"></Publicity>
     <FunctionBlock :flag="flag"></FunctionBlock>
   </div>
-</template>
+</template>s
 
 <script setup>
 

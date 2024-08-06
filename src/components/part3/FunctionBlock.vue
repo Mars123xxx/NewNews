@@ -7,7 +7,7 @@
       <el-upload
           v-model:file-list="fileList"
           class="upload-demo flex"
-          :action="uploadBaseURL"
+          :action="url.uploadBaseURL"
           :on-preview="handlePreview"
           :on-success="handleSuccess"
           :multiple="true"
@@ -30,7 +30,7 @@
       <el-card v-for="item in resultList" :key="item" class="resultItem" shadow="hover">
         <v-md-preview :text="item['text']"></v-md-preview>
         <div v-if="item['picPath']">
-          <el-image :src="'http://bream-magical-scorpion.ngrok-free.app/'+item['picPath']" alt="" width="80" height="80"></el-image>
+          <el-image :src="rootURL+item['picPath']" alt="" width="80" height="80"></el-image>
         </div>
       </el-card>
     </div>
@@ -45,13 +45,12 @@
 import {computed, nextTick, ref, watch} from "vue";
 import {ElMessage} from "element-plus";
 import axios from "@/utils/axios-plugin.js";
+import {rootURL,url} from "@/config.js";
+
 const props = defineProps({
   flag:Number,
   data:Array
 })
-
-const rootURL = "https://bream-magical-scorpion.ngrok-free.app/"
-const uploadBaseURL = rootURL+"upload"
 
 const textData = ref('')
 const dialogImageUrl = ref('')
@@ -85,7 +84,7 @@ const handleGenerate = ()=>{
   fileList.value.map((item)=>{
     picPathList.push(item['response']['picPath'])
   })
-  axios.post("/imagesTextMatchs",{'fileList':JSON.stringify(picPathList),'text':textData.value})
+  axios.post(url.imagesTextMatchs,{'fileList':JSON.stringify(picPathList),'text':textData.value})
       .then((res)=>{
         loading.value = false
         resultList.value = res

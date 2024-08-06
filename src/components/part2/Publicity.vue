@@ -7,7 +7,7 @@
         <div class="btn-box">
           <el-upload
               v-model:file-list="fileList"
-              :action="uploadBaseURL"
+              :action="url.uploadBaseURL"
               :on-preview="handlePreview"
               :on-success="handleSuccess"
               :multiple="true"
@@ -43,12 +43,12 @@
           >
             <el-button @click="handleFilter">Start filtering</el-button>
           </el-upload>
-
+          <el-switch v-model="switchValue" />
         </div>
       </div>
     </div>
     <div class="r-content">
-      <el-image src="https://cdn.nzxf.net/bucket/v2-fda5ab4414155c0c171ac5f87bc82ded_r.jpg" loading="eager" fit="cover"></el-image>
+      <el-image :src="src.image.part2" loading="eager" fit="cover"></el-image>
     </div>
     <el-dialog v-model="dialogVisible">
       <img style="width: 100%" :src="dialogImageUrl" alt="Preview Image" />
@@ -60,14 +60,14 @@
 import {ref} from "vue";
 import {ElMessage} from "element-plus";
 import axios from "@/utils/axios-plugin.js";
+import {rootURL,url,src} from "@/config.js";
 
-const rootURL = "https://bream-magical-scorpion.ngrok-free.app/"
-const uploadBaseURL = rootURL+"upload"
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 const fileList = ref([])
 const filterFileList = ref([])
 const loading = ref(false)
+const switchValue = ref(true)
 const handlePreview = (uploadFile)=>{
   dialogImageUrl.value = uploadFile.url
   dialogVisible.value = true
@@ -90,7 +90,9 @@ const handleFilter = ()=>{
   // })
   // {'fileList':JSON.stringify(picPathList)}
   loading.value = true
-  axios.post("/imgProcessFast",{'fileList':JSON.stringify(fileList.value)})
+  if (switchValue.value){
+    // 快速筛选
+    axios.post(url.imgProcessFast,{'fileList':JSON.stringify(fileList.value)})
       .then((res)=>{
         loading.value = false
         console.log(res)
@@ -105,7 +107,36 @@ const handleFilter = ()=>{
             type: 'warning',
           })
         }
-      })
+      }).catch(()=>{
+        ElMessage({
+            message: 'No result',
+            type: 'warning',
+          })
+    })
+  } else {
+    // 普通筛选
+    axios.post(url.imgProcess,{'fileList':JSON.stringify(fileList.value)})
+      .then((res)=>{
+        loading.value = false
+        console.log(res)
+        let temp = []
+        res.map((item)=>{
+          temp.push({name:`${Math.floor(Math.random()*99999999999999)}.png`,url:rootURL + item})
+        })
+        filterFileList.value = temp
+        if (res.length <= 0) {
+          ElMessage({
+            message: 'No result',
+            type: 'warning',
+          })
+        }
+      }).catch(()=>{
+        ElMessage({
+            message: 'No result',
+            type: 'warning',
+          })
+    })
+  }
 }
 </script>
 

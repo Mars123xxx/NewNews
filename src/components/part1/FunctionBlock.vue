@@ -1,8 +1,25 @@
 <template>
   <div class="function-part flex" ref="TextGeneration">
     <div class="center-box flex">
-      <div v-loading="loading" element-loading-text="Loading...">
-        <h1 class="text-center">News Text Generation</h1>
+      <h1 class="text-center">News Text Generation</h1>
+      <div class="upload-demo flex" v-loading="loading.box" element-loading-text="Loading...">
+        <div class="flex" style="flex-direction: column">
+            <el-upload
+                drag
+                :action="url.audioUploadURL"
+                multiple
+                accept="mp3,wav"
+                :on-success="handleSuccess"
+              >
+              <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+              <div class="el-upload__text">
+                Drop audio file (less than 5mb) here or <em>click to upload</em>
+              </div>
+            </el-upload>
+            <v-md-preview :text="result"></v-md-preview>
+        </div>
+      </div>
+      <div v-loading="loading.form" element-loading-text="Loading...">
         <h3 class="text-center">Please input news elements follow instruction</h3>
         <div class="form-box flex">
           <el-form
@@ -67,15 +84,19 @@ group involved in the news event" />
 </template>
 
 <script setup>
-import {computed, nextTick, ref, watch} from "vue";
+import {computed, nextTick, ref, watch,reactive} from "vue";
 import axios from "@/utils/axios-plugin.js";
 import {ElMessage} from "element-plus";
+import { UploadFilled } from '@element-plus/icons-vue'
+import {url} from '@/config.js'
 
 const props = defineProps({
   flag:Number
 })
-
-const loading = ref(false)
+const loading = reactive({
+  form:false,
+  box:false
+})
 
 const TextGeneration = ref()
 const formData = ref({
@@ -88,6 +109,7 @@ const formData = ref({
 })
 
 const text = ref('')
+const result = ref('')
 
 const radioList = ref([
   {
@@ -128,16 +150,16 @@ watch(()=>props.flag,()=>{
   TextGeneration.value.scrollIntoView({ block: 'start', behavior: 'smooth' })
 })
 const autosize = computed(()=>{
-  return { minRows:3}
+  return { minRows:3 }
 })
 
 const ResultRef = ref()
 
 const handleGenerate = ()=>{
-  loading.value = true
-  axios.post("textGeneration",formData.value)
+  loading.form = true
+  axios.post(url.textGeneration,formData.value)
       .then((response)=>{
-         loading.value = false
+         loading.form = false
          text.value = response.text
          ElMessage({
             message: 'success',
@@ -147,6 +169,17 @@ const handleGenerate = ()=>{
            ResultRef.value.scrollIntoView({ block:'start', behavior:'smooth' })
          })
     })
+}
+
+const handleSuccess = (resp) => {
+  loading.box = true
+  console.log(resp.text)
+  result.value = resp.text
+  loading.box = false
+  ElMessage({
+    message: 'success',
+    type: 'success',
+  })
 }
 </script>
 
@@ -168,6 +201,12 @@ const handleGenerate = ()=>{
       height: 3rem;
       font-size: larger;
       font-weight: bold;
+    }
+    .upload-demo{
+      max-width: 100%;
+      :deep(.el-upload){
+        width: 500px;
+      }
     }
   }
   :deep(.el-textarea__inner) {
