@@ -32,12 +32,14 @@ const handleGenerate = () => {
         nextTick(()=>{
           emit("data",res)
         })
+        loading.value = false
       }).catch(err=>{
         ElMessage.warning({
           message: err,
         })
+        loading.value = false
   })
-  loading.value = false
+
 }
 </script>
 
