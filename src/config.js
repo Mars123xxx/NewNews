@@ -1,6 +1,6 @@
 // const rootURL = "https://bream-magical-scorpion.ngrok-free.app/"
-// const rootURL = 'http://cuc-llm-f-1.natapp1.cc/'
-const rootURL = ""
+const rootURL = 'http://cuc-llm-f-1.natapp1.cc/'
+// const rootURL = ""
 
 const rootChidren = (path) => {
     return rootURL + path
@@ -12,9 +12,10 @@ const url = {
 
     // backend url
     imagesTextMatchs:rootChidren('imagesTextMatchs'),
+    imagesTextMatch:rootChidren('imagesTextMatch'),
     textGeneration:rootChidren('textGeneration'),
     imgProcessFast:rootChidren('imgProcessFast'),
-    imgProcess:rootChidren('imgProcess')
+    imgProcess:rootChidren('imgProcess'),
 }
 
 const src = {

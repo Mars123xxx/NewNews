@@ -1,12 +1,12 @@
 <template>
   <div class="publicity-part">
-    <div class="l-content">
+    <div class="l-content" v-loading="loading">
       <div style="position: relative;top: 20%">
         <h1>Image-Text Match</h1>
         <h2>Upload images and text to generate news</h2>
         <div class="btn-box">
           <el-button type="primary" @click="handleGenerate">Import result then start</el-button>
-          <el-button @click="$emit('upload')">Upload new material</el-button>
+          <el-button @click="emit('upload')">Upload new material</el-button>
         </div>
       </div>
     </div>
@@ -18,17 +18,26 @@
 
 <script setup>
 import axios from "@/utils/axios-plugin.js";
-import {nextTick} from "vue";
+import {nextTick,ref} from "vue";
 import {url,src} from "@/config.js";
+import {ElMessage} from "element-plus";
+
+const loading = ref(false)
 
 const emit = defineEmits(["upload","data"])
 const handleGenerate = () => {
-  axios.post(url.imagesTextMatchs)
+  loading.value = true
+  axios.post(url.imagesTextMatch)
       .then((res)=>{
         nextTick(()=>{
           emit("data",res)
         })
-      })
+      }).catch(err=>{
+        ElMessage.warning({
+          message: err,
+        })
+  })
+  loading.value = false
 }
 </script>
 
