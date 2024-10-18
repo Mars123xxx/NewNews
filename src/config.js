@@ -1,5 +1,5 @@
 // const rootURL = "https://bream-magical-scorpion.ngrok-free.app/"
-const rootURL = 'http://cuc-llm-f-1.natapp1.cc/'
+const rootURL = 'http://39.106.253.178:8888'
 // const rootURL = ""
 
 const rootChidren = (path) => {
