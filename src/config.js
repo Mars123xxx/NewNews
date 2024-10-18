@@ -1,20 +1,20 @@
 // const rootURL = "https://bream-magical-scorpion.ngrok-free.app/"
 // const rootURL = 'http://cuc-llm-f-1.natapp1.cc/'
-const rootURL = ""
+const rootURL = "http://127.0.0.1:8000"
 
-const rootChidren = (path) => {
+const rootChildren = (path) => {
     return rootURL + path
 }
 
 const url = {
-    audioUploadURL:rootChidren('speechRecognition'),
-    uploadBaseURL:rootChidren('upload'),
+    audioUploadURL:rootChildren('speechRecognition'),
+    uploadBaseURL:rootChildren('upload'),
 
     // backend url
-    imagesTextMatchs:rootChidren('imagesTextMatchs'),
-    textGeneration:rootChidren('textGeneration'),
-    imgProcessFast:rootChidren('imgProcessFast'),
-    imgProcess:rootChidren('imgProcess')
+    imagesTextMatchs:rootChildren('imagesTextMatchs'),
+    textGeneration:rootChildren('textGeneration'),
+    imgProcessFast:rootChildren('imgProcessFast'),
+    imgProcess:rootChildren('imgProcess')
 }
 
 const src = {
