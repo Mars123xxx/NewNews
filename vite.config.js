@@ -19,7 +19,7 @@ export default defineConfig({
     port: 8000,        // 开发服务器的端口号
     proxy: {
       "/api": {
-        target: "http://39.106.253.178:8888", // 目标地址
+        target: "http://39.106.253.178", // 目标地址
         changeOrigin: true,            // 是否换源
         rewrite: (path) => path.replace(/\/api/, ""),
       },
