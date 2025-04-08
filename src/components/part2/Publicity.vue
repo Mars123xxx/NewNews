@@ -43,7 +43,7 @@
           >
             <el-button @click="handleFilter">Start filtering</el-button>
           </el-upload>
-          <el-switch v-model="switchValue" />
+          <el-switch v-model="switchValue" active-text="Fast Mode" inactive-text="Normal Mode" inline-prompt/>
         </div>
       </div>
     </div>
@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {ElMessage} from "element-plus";
 import axios from "@/utils/axios-plugin.js";
 import {rootURL,url,src} from "@/config.js";
@@ -78,6 +78,12 @@ const handleSuccess = ()=>{
     type: 'success',
   })
 }
+
+watch(switchValue,(value)=>{
+  ElMessage.success({
+    message: value ? 'Fast Mode' : 'Normal Mode',
+  })
+})
 
 const handleFilter = ()=>{
   // filterFileList.value = [
@@ -163,6 +169,33 @@ const handleFilter = ()=>{
         height: 3rem;
         font-size: larger;
         font-weight: bold;
+      }
+      :deep(.el-switch){
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+      }
+      :deep(.el-switch__core){
+        height: 50px;
+        width: 100%;
+        padding: 20px;
+        .el-switch__inner {
+          & > .is-text{
+            font-size: larger;
+            font-weight: bold;
+          }
+        }
+        .el-switch__action{
+          position: absolute;
+          left: 10px;
+        }
+      }
+      :deep(.is-checked){
+        .el-switch__action{
+          position: absolute;
+          left: calc(100% - 25px);
+        }
       }
     }
     height: 100%;

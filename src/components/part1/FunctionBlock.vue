@@ -5,8 +5,8 @@
       <div class="upload-demo flex" v-loading="loading.box" element-loading-text="Loading...">
         <div class="flex" style="flex-direction: column">
             <el-upload
-                drag
                 :action="url.audioUploadURL"
+                drag
                 multiple
                 accept="mp3,wav"
                 :on-success="handleSuccess"
@@ -83,7 +83,7 @@ group involved in the news event" />
   </div>
 </template>
 
-<script setup>
+<script setup lang="js">
 import {computed, nextTick, ref, watch,reactive} from "vue";
 import axios from "@/utils/axios-plugin.js";
 import {ElMessage} from "element-plus";
@@ -168,13 +168,16 @@ const handleGenerate = ()=>{
          nextTick(()=>{
            ResultRef.value.scrollIntoView({ block:'start', behavior:'smooth' })
          })
-    })
+    }).catch((error)=>{
+      console.log(error)
+      ElMessage.warning({
+        message:'请将必要信息填写完整'
+      })
+  })
 }
 
 const handleSuccess = (resp) => {
-  loading.box = true
-  console.log(resp.text)
-  result.value = resp.text
+  result.value = result.value + resp.text
   loading.box = false
   ElMessage({
     message: 'success',

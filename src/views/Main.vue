@@ -1,20 +1,33 @@
 <template>
-  <el-container>
-    <el-header><Header></Header></el-header>
+  <div>
+    <el-header class="padding-0">
+      <Header class="height-full"></Header>
+    </el-header>
     <div class="main">
-      <keep-alive>
         <router-view></router-view>
-      </keep-alive>
     </div>
     <Footer></Footer>
-  </el-container>
+
+
+  </div>
 </template>
 
 <script setup>
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-
 </script>
 
 <style lang="scss" scoped>
+:deep(.el-header){
+  position: fixed;
+  height: 4.5rem;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+
+.main{
+  margin-top: 4.5rem;
+}
 </style>

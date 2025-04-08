@@ -1,0 +1,18 @@
+.flex{
+  display: flex;
+  &.flex-column{
+    flex-direction: column;
+  }
+}
+
+.height-full{
+  height: 100%;
+}
+
+.width-full{
+  width: 100%;
+}
+
+.padding-0{
+  padding: 0;
+}
